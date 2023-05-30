@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             labelTitle = new Label();
             labelDeveloper = new Label();
             labelDate = new Label();
@@ -37,6 +38,7 @@
             buttonBeefService = new Button();
             pictureBoxIcon = new PictureBox();
             labelTotal = new Label();
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)dataGridViewProductos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxIcon).BeginInit();
             SuspendLayout();
@@ -64,9 +66,9 @@
             labelDate.AutoSize = true;
             labelDate.Location = new Point(345, 74);
             labelDate.Name = "labelDate";
-            labelDate.Size = new Size(38, 15);
+            labelDate.Size = new Size(30, 15);
             labelDate.TabIndex = 2;
-            labelDate.Text = "label3";
+            labelDate.Text = "date";
             // 
             // dataGridViewProductos
             // 
@@ -85,6 +87,8 @@
             textBoxCodigo.Name = "textBoxCodigo";
             textBoxCodigo.Size = new Size(100, 23);
             textBoxCodigo.TabIndex = 4;
+            textBoxCodigo.KeyPress += textBoxCodigo_KeyPress;
+            textBoxCodigo.PreviewKeyDown += textBoxCodigo_PreviewKeyDown;
             // 
             // buttonIce
             // 
@@ -121,6 +125,10 @@
             labelTotal.Size = new Size(32, 15);
             labelTotal.TabIndex = 8;
             labelTotal.Text = "Total";
+            // 
+            // timer1
+            // 
+            timer1.Tick += time_tick;
             // 
             // PanelPrincipal
             // 
@@ -159,5 +167,6 @@
         private Button buttonBeefService;
         private PictureBox pictureBoxIcon;
         private Label labelTotal;
+        private System.Windows.Forms.Timer timer1;
     }
 }
