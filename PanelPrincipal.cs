@@ -7,14 +7,16 @@ namespace TheSpiritedCat
     public partial class PanelPrincipal : Form
     {
         // Class variables
-        // Mysql
-        MySqlConnection mysqlCon = new MySqlConnection("server=localhost;database=pos;uid=root;pwd=;");
-        MySqlCommand cmd;
-        MySqlDataReader reader;
+      
+        
+        
+
         // Mysql Strings
         string query = "";
         string quantity = "";
         double total = 0;
+        int rows = 0;
+        MySqlConnection mysqlCon = new MySqlConnection("server=localhost;database=pos;uid=jban;pwd=;port=3306");
 
         public PanelPrincipal()
         {
@@ -23,6 +25,8 @@ namespace TheSpiritedCat
 
         private void PanelPrincipal_Load(object sender, EventArgs e)
         {
+           
+
             // Fonts
             Font fontTitle = new Font("Arial", 29, FontStyle.Bold);
             Font font = new Font("Arial", 18);
@@ -144,13 +148,13 @@ namespace TheSpiritedCat
 
         private void textBoxCodigo_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)13)//PARA CUANDO EL USUARIO LE DE ENTER SE MANDE EL MENSAJE
+            if (e.KeyChar == (char)13) // key Enter
             {
 
                 try
                 {
 
-
+                    
                     if (textBoxCodigo.Text.IndexOf('*') != -1)
                     {
 
@@ -164,17 +168,26 @@ namespace TheSpiritedCat
                         query = "SELECT * FROM productos WHERE codigo = " + "'" + textBoxCodigo.Text + "'";
                     }
                     
-                    MessageBox.Show("SELECT * FROM productos WHERE codigo = " + "'" + textBoxCodigo.Text + "'");
                     mysqlCon.Open();
-                    string queryPrueba = "SELECT * FROM productos WHERE codigo = '1'";
-                    cmd = new MySqlCommand(queryPrueba, mysqlCon);
-                    reader = cmd.ExecuteReader();
+                    // MessageBox.Show(mysqlCon.State.ToString());
+
+                    MySqlCommand cmd = new MySqlCommand(query, mysqlCon);
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
                     while(reader.Read()) 
                     {
-                        MessageBox.Show(reader["nombre"]+ " "+ reader["precio"]);
+                        rows = dataGridViewProductos.Rows.Add(quantity.ToString(), reader.GetString(1), Math.Round(reader.GetDouble(2), 2), (double.Parse(reader.GetString(2)) * double.Parse(quantity.ToString())));
+                        dataGridViewProductos.ClearSelection();
+                        dataGridViewProductos.Rows[rows].Selected = true;
+                        if (rows < dataGridViewProductos.Rows.Count - 1) {
 
+                            dataGridViewProductos.CurrentCell = dataGridViewProductos.Rows[rows + 1].Cells[0];
+                        }
+                        updatePrice();
                     }
+                    mysqlCon.Close();
                     MessageBox.Show(mysqlCon.State.ToString());
+
                 }
                 catch (MySql.Data.MySqlClient.MySqlException ex)
                 {
@@ -187,10 +200,34 @@ namespace TheSpiritedCat
                 {
                     textBoxCodigo.Clear();
                 }
+
+
             }
 
             
         }
+
+        private void updatePrice() {
+
+            total = 0;
+            int i = 0;
+            foreach (DataGridViewRow row in dataGridViewProductos.Rows) {
+
+                DataGridViewCell cell = row.Cells[3];
+                if (cell.Value != null) {
+                    
+                    double tempTotal = double.Parse(cell.Value.ToString());
+                    total += tempTotal;
+                    i++;
+
+                }
+                labelTotal.Text = "Total $ " + Math.Round(total, 2).ToString();
+            }
+
+                
+        }
     }
+
+
 
 }
