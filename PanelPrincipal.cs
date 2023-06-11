@@ -48,24 +48,30 @@ namespace TheSpiritedCat
             pictureBoxIcon.SizeMode = PictureBoxSizeMode.Zoom;
             labelDeveloper.Text = "Developed By JBanS";
             labelTitle.Text = "The Spirited Cat";
-            pictureBoxIcon.Size = new Size(200, labelDate.Height + labelDeveloper.Height + labelTitle.Height);
-            this.BackColor = Color.FromArgb(110, 105, 140);
-            buttonBeefService.FlatStyle = FlatStyle.Flat;
-            buttonBeefService.Image = Image.FromFile("../../../img/filete-servicio-100.png");
-            buttonBeefService.ImageAlign = ContentAlignment.MiddleCenter;
-            buttonIce.ImageAlign = ContentAlignment.MiddleCenter;
-            buttonIce.Font = new Font("Arial", 14, FontStyle.Bold);
-            buttonBeefService.Font = new Font("Arial", 14, FontStyle.Bold);
-            buttonBeefService.Size = new Size(150, 150);
-            buttonIce.Size = new Size(150, 150);
-            buttonBeefService.Text = "Servicio Carne";
-            buttonIce.FlatStyle = FlatStyle.Flat;
-            buttonIce.Text = "Bebidas ICE";
-            buttonBeefService.TextAlign = ContentAlignment.BottomCenter;
-            buttonIce.TextAlign = ContentAlignment.BottomCenter;
-            buttonIce.Image = Image.FromFile("../../../img/soda-servicio-100.png");
-            buttonBeefService.BackColor = Color.FromArgb(237, 194, 242);
-            buttonIce.BackColor = Color.FromArgb(237, 194, 242);
+            pictureBoxIcon.Size = new Size(200, labelTotal.Height + labelTitle.Height + labelDeveloper.Height + labelDate.Height);
+            pictureBoxIcon.BorderStyle = BorderStyle.FixedSingle;
+            button_secret.FlatStyle = FlatStyle.Flat;
+            button_secret.ImageAlign = ContentAlignment.MiddleCenter;
+            button_eliminar.FlatStyle = FlatStyle.Flat;
+            button_eliminar.ImageAlign = ContentAlignment.MiddleCenter;
+            button_ice.ImageAlign = ContentAlignment.MiddleCenter;
+            button_ice.Font = new Font("Arial", 12, FontStyle.Bold);
+            button_secret.Font = new Font("Arial", 12, FontStyle.Bold);
+            button_secret.Size = new Size(120, 120);
+            button_eliminar.Font = new Font("Arial", 12, FontStyle.Bold);
+            button_eliminar.Size = new Size(120, 120);
+            button_ice.Size = new Size(120, 120);
+            button_secret.Text = "Servicio";
+            button_ice.FlatStyle = FlatStyle.Flat;
+            button_ice.Text = "Bebidas ICE";
+            button_eliminar.Text = "Borrar";
+            button_secret.TextAlign = ContentAlignment.BottomCenter;
+            button_ice.TextAlign = ContentAlignment.BottomCenter;
+            button_eliminar.TextAlign = ContentAlignment.BottomCenter;
+            button_secret.BackColor = Color.FromArgb(237, 194, 242);
+            button_ice.BackColor = Color.FromArgb(237, 194, 242);
+            button_eliminar.BackColor = Color.FromArgb(237, 194, 242);
+
 
 
 
@@ -73,27 +79,28 @@ namespace TheSpiritedCat
             labelDate.Text = DateTime.Now.ToLongTimeString() + " " + DateTime.Now.ToLongDateString();
             // Items Location
             pictureBoxIcon.Location = new Point(10, 10);
-            labelTitle.Location = new Point((this.Width / 2) - (labelTitle.Width / 2), 10);
+            labelTitle.Location = new Point((this.Width / 2) - (labelTitle.Width / 2));
             labelDeveloper.Location = new Point(((this.Width / 2) - (labelDeveloper.Width / 2)), labelTitle.Height + labelDeveloper.Height);
-            labelDate.Location = new Point((this.Width / 2) - (labelDate.Width / 2), (labelTitle.Height + labelDeveloper.Height + labelDate.Height));
-
-            dataGridViewProductos.Location = new Point((10), (labelTitle.Height + labelDeveloper.Height + labelDate.Height + pictureBoxIcon.Height));
-            dataGridViewProductos.Width = (this.Width - 20);
+            labelDate.Location = new Point((this.Width / 2) - (labelDate.Width / 2), (labelDate.Height + labelDeveloper.Height + labelTitle.Height));
+            dataGridViewProductos.Location = new Point((20), (labelTotal.Height + labelTitle.Height + pictureBoxIcon.Height));
+            dataGridViewProductos.Width = (this.Width / 3) * 2 + 60;
             dataGridViewProductos.Height = (this.Height / 4) * 2;
             dataGridViewProductos.BackgroundColor = Color.White;
-            textBoxCodigo.Location = new Point(10, labelTitle.Height + pictureBoxIcon.Height);
+            textBoxCodigo.Location = new Point(20, labelTitle.Height + pictureBoxIcon.Height);
+            textBoxCodigo.Width = (this.Width / 3) * 2 + 60;
 
-            textBoxCodigo.Width = this.Width - 20;
-            buttonBeefService.Location = new Point(this.Width / 2 - buttonBeefService.Width / 2, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
-            buttonIce.Location = new Point(this.Width / 2 - buttonIce.Width / 2 - buttonIce.Width, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
 
-            labelTotal.Location = new Point(this.Width - pictureBoxIcon.Width);
+            button_secret.Location = new Point(this.Width / 2 - button_secret.Width / 2, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
+            button_ice.Location = new Point(this.Width / 2 - button_ice.Width / 2 - button_ice.Width, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
+            button_eliminar.Location = new Point(this.Width / 2 - button_eliminar.Width / 2 - button_eliminar.Width - button_ice.Width, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
+
+            labelTotal.Location = new Point(this.Width - dataGridViewProductos.Width / 3, this.Height - dataGridViewProductos.Height - pictureBoxIcon.Height);
 
 
             // datagrid rows and headers
             dataGridViewProductos.Columns.Add("cantidad", "Cantidad");
             dataGridViewProductos.Columns[0].HeaderCell.Style.Font = fontDataGrid;
-            dataGridViewProductos.Columns[0].Width = dataGridViewProductos.Width * 10 / 100;
+            dataGridViewProductos.Columns[0].Width = dataGridViewProductos.Width * 15 / 100;
 
             dataGridViewProductos.Columns.Add("nombre", "Nombre");
             dataGridViewProductos.Columns[1].HeaderCell.Style.Font = fontDataGrid;
@@ -101,7 +108,7 @@ namespace TheSpiritedCat
 
             dataGridViewProductos.Columns.Add("precio", "Precio");
             dataGridViewProductos.Columns[2].HeaderCell.Style.Font = fontDataGrid;
-            dataGridViewProductos.Columns[2].Width = dataGridViewProductos.Width * 20 / 100;
+            dataGridViewProductos.Columns[2].Width = dataGridViewProductos.Width * 15 / 100;
 
             dataGridViewProductos.Columns.Add("total", "Total");
             dataGridViewProductos.Columns[3].HeaderCell.Style.Font = fontDataGrid;
@@ -246,6 +253,24 @@ namespace TheSpiritedCat
 
                 }
                 labelTotal.Text = "Total $ " + Math.Round(total, 2).ToString();
+            }
+
+
+        }
+
+        private void button_eliminar_Click(object sender, EventArgs e)
+        {
+            int index = dataGridViewProductos.CurrentCell.RowIndex;
+
+            if (dataGridViewProductos.CurrentRow != null && index >= 1)
+            {
+                dataGridViewProductos.Rows.RemoveAt(index - 1);
+            }
+            else 
+            {
+                MessageBox.Show("No hay mas que eliminar");
+                return;
+
             }
 
 
