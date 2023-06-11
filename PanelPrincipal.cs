@@ -7,14 +7,16 @@ namespace TheSpiritedCat
     public partial class PanelPrincipal : Form
     {
         // Class variables
-        // Mysql
-        MySqlConnection mysqlCon = new MySqlConnection("server=localhost;database=pos;uid=root;pwd=;");
-        MySqlCommand cmd;
-        MySqlDataReader reader;
+
+
+
+
         // Mysql Strings
         string query = "";
         string quantity = "";
         double total = 0;
+        int rows = 0;
+        MySqlConnection mysqlCon = new MySqlConnection("server=localhost;database=pos;uid=jban;pwd=;port=3306");
 
         public PanelPrincipal()
         {
@@ -23,6 +25,7 @@ namespace TheSpiritedCat
 
         private void PanelPrincipal_Load(object sender, EventArgs e)
         {
+
             // Fonts
             Font fontTitle = new Font("Arial", 29, FontStyle.Bold);
             Font font = new Font("Arial", 18);
@@ -36,7 +39,8 @@ namespace TheSpiritedCat
 
             labelTotal.Font = fontTitle;
             labelDate.Font = font;
-            labelDeveloper.Font = font;
+            dataGridViewProductos.Font = font;
+            labelDeveloper.Font = fontDev;
             textBoxCodigo.Font = font;
 
             // Data Properties
@@ -44,7 +48,7 @@ namespace TheSpiritedCat
             pictureBoxIcon.SizeMode = PictureBoxSizeMode.Zoom;
             labelDeveloper.Text = "Developed By JBanS";
             labelTitle.Text = "The Spirited Cat";
-            pictureBoxIcon.Size = new Size(300, labelDate.Height + labelDeveloper.Height + labelTitle.Height + 90);
+            pictureBoxIcon.Size = new Size(200, labelDate.Height + labelDeveloper.Height + labelTitle.Height);
             this.BackColor = Color.FromArgb(110, 105, 140);
             buttonBeefService.FlatStyle = FlatStyle.Flat;
             buttonBeefService.Image = Image.FromFile("../../../img/filete-servicio-100.png");
@@ -52,8 +56,8 @@ namespace TheSpiritedCat
             buttonIce.ImageAlign = ContentAlignment.MiddleCenter;
             buttonIce.Font = new Font("Arial", 14, FontStyle.Bold);
             buttonBeefService.Font = new Font("Arial", 14, FontStyle.Bold);
-            buttonBeefService.Size = new Size(180, 180);
-            buttonIce.Size = new Size(180, 180);
+            buttonBeefService.Size = new Size(150, 150);
+            buttonIce.Size = new Size(150, 150);
             buttonBeefService.Text = "Servicio Carne";
             buttonIce.FlatStyle = FlatStyle.Flat;
             buttonIce.Text = "Bebidas ICE";
@@ -72,15 +76,18 @@ namespace TheSpiritedCat
             labelTitle.Location = new Point((this.Width / 2) - (labelTitle.Width / 2), 10);
             labelDeveloper.Location = new Point(((this.Width / 2) - (labelDeveloper.Width / 2)), labelTitle.Height + labelDeveloper.Height);
             labelDate.Location = new Point((this.Width / 2) - (labelDate.Width / 2), (labelTitle.Height + labelDeveloper.Height + labelDate.Height));
+
             dataGridViewProductos.Location = new Point((10), (labelTitle.Height + labelDeveloper.Height + labelDate.Height + pictureBoxIcon.Height));
             dataGridViewProductos.Width = (this.Width - 20);
             dataGridViewProductos.Height = (this.Height / 4) * 2;
             dataGridViewProductos.BackgroundColor = Color.White;
             textBoxCodigo.Location = new Point(10, labelTitle.Height + pictureBoxIcon.Height);
+
             textBoxCodigo.Width = this.Width - 20;
             buttonBeefService.Location = new Point(this.Width / 2 - buttonBeefService.Width / 2, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
             buttonIce.Location = new Point(this.Width / 2 - buttonIce.Width / 2 - buttonIce.Width, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
-            labelTotal.Location = new Point((this.Width / 2) + pictureBoxIcon.Width + labelTitle.Width, labelTitle.Height + labelDeveloper.Height);
+
+            labelTotal.Location = new Point(this.Width - pictureBoxIcon.Width);
 
 
             // datagrid rows and headers
@@ -144,7 +151,7 @@ namespace TheSpiritedCat
 
         private void textBoxCodigo_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)13)//PARA CUANDO EL USUARIO LE DE ENTER SE MANDE EL MENSAJE
+            if (e.KeyChar == (char)13) // key Enter
             {
 
                 try
@@ -163,18 +170,27 @@ namespace TheSpiritedCat
                         quantity = "1";
                         query = "SELECT * FROM productos WHERE codigo = " + "'" + textBoxCodigo.Text + "'";
                     }
-                    
-                    MessageBox.Show("SELECT * FROM productos WHERE codigo = " + "'" + textBoxCodigo.Text + "'");
-                    mysqlCon.Open();
-                    string queryPrueba = "SELECT * FROM productos WHERE codigo = '1'";
-                    cmd = new MySqlCommand(queryPrueba, mysqlCon);
-                    reader = cmd.ExecuteReader();
-                    while(reader.Read()) 
-                    {
-                        MessageBox.Show(reader["nombre"]+ " "+ reader["precio"]);
 
-                    }
+                    mysqlCon.Open();
                     MessageBox.Show(mysqlCon.State.ToString());
+
+                    MySqlCommand cmd = new MySqlCommand(query, mysqlCon);
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        rows = dataGridViewProductos.Rows.Add(quantity.ToString(), reader.GetString(2), Math.Round(reader.GetDouble(3), 2), (double.Parse(reader.GetString(3)) * double.Parse(quantity.ToString())));
+                        dataGridViewProductos.ClearSelection();
+                        dataGridViewProductos.Rows[rows].Selected = true;
+                        if (rows < dataGridViewProductos.Rows.Count - 1)
+                        {
+
+                            dataGridViewProductos.CurrentCell = dataGridViewProductos.Rows[rows + 1].Cells[0];
+                        }
+                        updatePrice();
+                    }
+                    mysqlCon.Close();
+
                 }
                 catch (MySql.Data.MySqlClient.MySqlException ex)
                 {
@@ -182,15 +198,60 @@ namespace TheSpiritedCat
                     MessageBox.Show("ERROR mysql" + ex.Message);
 
                 }
-                
+                catch (Exception error)
+                {
+                    MessageBox.Show($"Error: {error.Message}");
+                }
                 finally
                 {
                     textBoxCodigo.Clear();
                 }
+
+
             }
 
-            
+            if (e.KeyChar == (char)112 || e.KeyChar == (char)80)
+            {
+
+                e.Handled = true;
+                if (total != double.Parse(textBoxCodigo.Text))
+                {
+
+
+
+                }
+                dataGridViewProductos.Rows.Clear();
+                textBoxCodigo.Clear();
+
+
+            }
+
+        }
+
+        private void updatePrice()
+        {
+
+            total = 0;
+            int i = 0;
+            foreach (DataGridViewRow row in dataGridViewProductos.Rows)
+            {
+
+                DataGridViewCell cell = row.Cells[3];
+                if (cell.Value != null)
+                {
+
+                    double tempTotal = double.Parse(cell.Value.ToString());
+                    total += tempTotal;
+                    i++;
+
+                }
+                labelTotal.Text = "Total $ " + Math.Round(total, 2).ToString();
+            }
+
+
         }
     }
+
+
 
 }

@@ -128,6 +128,7 @@
             // 
             // timer1
             // 
+            timer1.Enabled = true;
             timer1.Tick += time_tick;
             // 
             // PanelPrincipal
