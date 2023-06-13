@@ -34,11 +34,12 @@
             labelDate = new Label();
             dataGridViewProductos = new DataGridView();
             textBoxCodigo = new TextBox();
-            buttonIce = new Button();
-            buttonBeefService = new Button();
+            button_ice = new Button();
+            button_secret = new Button();
             pictureBoxIcon = new PictureBox();
             labelTotal = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
+            button_eliminar = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewProductos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxIcon).BeginInit();
             SuspendLayout();
@@ -90,23 +91,23 @@
             textBoxCodigo.KeyPress += textBoxCodigo_KeyPress;
             textBoxCodigo.PreviewKeyDown += textBoxCodigo_PreviewKeyDown;
             // 
-            // buttonIce
+            // button_ice
             // 
-            buttonIce.Location = new Point(90, 418);
-            buttonIce.Name = "buttonIce";
-            buttonIce.Size = new Size(75, 23);
-            buttonIce.TabIndex = 5;
-            buttonIce.Text = "Bebidas";
-            buttonIce.UseVisualStyleBackColor = true;
+            button_ice.Location = new Point(90, 418);
+            button_ice.Name = "button_ice";
+            button_ice.Size = new Size(75, 23);
+            button_ice.TabIndex = 5;
+            button_ice.Text = "btn2";
+            button_ice.UseVisualStyleBackColor = true;
             // 
-            // buttonBeefService
+            // button_secret
             // 
-            buttonBeefService.Location = new Point(217, 418);
-            buttonBeefService.Name = "buttonBeefService";
-            buttonBeefService.Size = new Size(130, 23);
-            buttonBeefService.TabIndex = 6;
-            buttonBeefService.Text = "Servicio de Carne Asada";
-            buttonBeefService.UseVisualStyleBackColor = true;
+            button_secret.Location = new Point(217, 418);
+            button_secret.Name = "button_secret";
+            button_secret.Size = new Size(130, 23);
+            button_secret.TabIndex = 6;
+            button_secret.Text = "btn1";
+            button_secret.UseVisualStyleBackColor = true;
             // 
             // pictureBoxIcon
             // 
@@ -128,17 +129,29 @@
             // 
             // timer1
             // 
+            timer1.Enabled = true;
             timer1.Tick += time_tick;
+            // 
+            // button_eliminar
+            // 
+            button_eliminar.Location = new Point(380, 418);
+            button_eliminar.Name = "button_eliminar";
+            button_eliminar.Size = new Size(75, 23);
+            button_eliminar.TabIndex = 9;
+            button_eliminar.Text = "btn3";
+            button_eliminar.UseVisualStyleBackColor = true;
+            button_eliminar.Click += button_eliminar_Click;
             // 
             // PanelPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(847, 469);
+            Controls.Add(button_eliminar);
             Controls.Add(labelTotal);
             Controls.Add(pictureBoxIcon);
-            Controls.Add(buttonBeefService);
-            Controls.Add(buttonIce);
+            Controls.Add(button_secret);
+            Controls.Add(button_ice);
             Controls.Add(textBoxCodigo);
             Controls.Add(dataGridViewProductos);
             Controls.Add(labelDate);
@@ -163,10 +176,11 @@
         private Label labelDate;
         private DataGridView dataGridViewProductos;
         private TextBox textBoxCodigo;
-        private Button buttonIce;
-        private Button buttonBeefService;
+        private Button button_ice;
+        private Button button_secret;
         private PictureBox pictureBoxIcon;
         private Label labelTotal;
         private System.Windows.Forms.Timer timer1;
+        private Button button_eliminar;
     }
 }
