@@ -40,6 +40,7 @@
             labelTotal = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
             button_eliminar = new Button();
+            labelCambio = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridViewProductos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxIcon).BeginInit();
             SuspendLayout();
@@ -142,11 +143,21 @@
             button_eliminar.UseVisualStyleBackColor = true;
             button_eliminar.Click += button_eliminar_Click;
             // 
+            // labelCambio
+            // 
+            labelCambio.AutoSize = true;
+            labelCambio.Location = new Point(0, 0);
+            labelCambio.Name = "labelCambio";
+            labelCambio.Size = new Size(58, 15);
+            labelCambio.TabIndex = 10;
+            labelCambio.Text = "Cambio $";
+            // 
             // PanelPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(847, 469);
+            Controls.Add(labelCambio);
             Controls.Add(button_eliminar);
             Controls.Add(labelTotal);
             Controls.Add(pictureBoxIcon);
@@ -182,5 +193,6 @@
         private Label labelTotal;
         private System.Windows.Forms.Timer timer1;
         private Button button_eliminar;
+        private Label labelCambio;
     }
 }

@@ -7,14 +7,11 @@ namespace TheSpiritedCat
     public partial class PanelPrincipal : Form
     {
         // Class variables
-
-
-
-
         // Mysql Strings
         string query = "";
         string quantity = "";
-        double total = 0;
+        public double cambioPrincipal = 0;
+        public static double total = 0;
         int rows = 0;
         MySqlConnection mysqlCon = new MySqlConnection("server=localhost;database=pos;uid=jban;pwd=;port=3306");
 
@@ -32,11 +29,15 @@ namespace TheSpiritedCat
             Font fontDataGrid = new Font("Arial", 18, FontStyle.Bold);
             Font fontDev = new Font("Arial", 18, FontStyle.Italic);
             labelTitle.Font = fontTitle;
-            labelTitle.ForeColor = Color.FromArgb(237, 194, 242);
-            labelDate.ForeColor = Color.FromArgb(237, 194, 242);
-            labelTotal.ForeColor = Color.FromArgb(237, 194, 242);
-            labelDeveloper.ForeColor = Color.FromArgb(237, 194, 242);
+            Color fontColorMurasaki = Color.FromArgb(110, 105, 140);
+            labelTitle.ForeColor = fontColorMurasaki;
+            labelDate.ForeColor = fontColorMurasaki;
+            labelTotal.ForeColor = fontColorMurasaki;
+            labelDeveloper.ForeColor = fontColorMurasaki;
+            labelCambio.ForeColor = fontColorMurasaki;
 
+            labelCambio.Font = font;
+            labelCambio.Visible = false;
             labelTotal.Font = fontTitle;
             labelDate.Font = font;
             dataGridViewProductos.Font = font;
@@ -49,7 +50,6 @@ namespace TheSpiritedCat
             labelDeveloper.Text = "Developed By JBanS";
             labelTitle.Text = "The Spirited Cat";
             pictureBoxIcon.Size = new Size(200, labelTotal.Height + labelTitle.Height + labelDeveloper.Height + labelDate.Height);
-            pictureBoxIcon.BorderStyle = BorderStyle.FixedSingle;
             button_secret.FlatStyle = FlatStyle.Flat;
             button_secret.ImageAlign = ContentAlignment.MiddleCenter;
             button_eliminar.FlatStyle = FlatStyle.Flat;
@@ -57,13 +57,13 @@ namespace TheSpiritedCat
             button_ice.ImageAlign = ContentAlignment.MiddleCenter;
             button_ice.Font = new Font("Arial", 12, FontStyle.Bold);
             button_secret.Font = new Font("Arial", 12, FontStyle.Bold);
-            button_secret.Size = new Size(120, 120);
+            button_secret.Size = new Size(100, 50);
             button_eliminar.Font = new Font("Arial", 12, FontStyle.Bold);
-            button_eliminar.Size = new Size(120, 120);
-            button_ice.Size = new Size(120, 120);
+            button_eliminar.Size = new Size(100, 50);
+            button_ice.Size = new Size(100, 50);
             button_secret.Text = "Servicio";
             button_ice.FlatStyle = FlatStyle.Flat;
-            button_ice.Text = "Bebidas ICE";
+            button_ice.Text = "ICE";
             button_eliminar.Text = "Borrar";
             button_secret.TextAlign = ContentAlignment.BottomCenter;
             button_ice.TextAlign = ContentAlignment.BottomCenter;
@@ -95,6 +95,7 @@ namespace TheSpiritedCat
             button_eliminar.Location = new Point(this.Width / 2 - button_eliminar.Width / 2 - button_eliminar.Width - button_ice.Width, dataGridViewProductos.Height + labelDeveloper.Height + labelTitle.Height + labelDate.Height + pictureBoxIcon.Height);
 
             labelTotal.Location = new Point(this.Width - dataGridViewProductos.Width / 3, this.Height - dataGridViewProductos.Height - pictureBoxIcon.Height);
+            labelCambio.Location = new Point(this.Width - dataGridViewProductos.Width / 3, this.Height - dataGridViewProductos.Height - pictureBoxIcon.Height -labelTotal.Height - labelCambio.Height/2);
 
 
             // datagrid rows and headers
@@ -221,12 +222,15 @@ namespace TheSpiritedCat
             {
 
                 e.Handled = true;
-                if (total != double.Parse(textBoxCodigo.Text))
-                {
+                cobrar cobro = new cobrar();
+                cobro.Activate();
+                cobro.TopLevel = true;
+                cobro.ShowDialog();
+                cambioPrincipal = cobrar.cambio;
+                MessageBox.Show(cambioPrincipal.ToString());
+                labelCambio.Text = "Cambio $"+cambioPrincipal.ToString();
+                labelCambio.Visible = true;
 
-
-
-                }
                 dataGridViewProductos.Rows.Clear();
                 textBoxCodigo.Clear();
 
@@ -266,7 +270,7 @@ namespace TheSpiritedCat
             {
                 dataGridViewProductos.Rows.RemoveAt(index - 1);
             }
-            else 
+            else
             {
                 MessageBox.Show("No hay mas que eliminar");
                 return;
